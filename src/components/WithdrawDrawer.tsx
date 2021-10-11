@@ -128,7 +128,7 @@ export function WithdrawDrawer() {
                     {withdrawalTx && (
                         <FormControl id="txHash" mb={4}>
                             <FormLabel>Transaction Hash</FormLabel>
-                            <Link fontSize="sm" isExternal href={makeEtherscanLink(withdrawalTx.hash, 'transaction')}>
+                            <Link isExternal href={makeEtherscanLink(withdrawalTx.hash, 'transaction')}>
                                 {withdrawalTx.hash}
                             </Link>
                         </FormControl>
