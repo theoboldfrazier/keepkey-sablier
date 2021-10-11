@@ -1,7 +1,6 @@
 import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
-
-import { Stream } from "../types";
+import { Stream } from "src/types";
 
 export type FormattedStream = Stream & {
     available: string;

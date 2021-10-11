@@ -4,7 +4,7 @@ export function formatAddress(address: string = '') {
 
 export function makeEtherscanLink(
     data: string,
-    type: 'transaction' | 'token' | 'address' | 'block'
+    type?: 'transaction' | 'token' | 'address' | 'block'
 ): string {
     const prefix = `https://etherscan.io`
 

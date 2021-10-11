@@ -6,10 +6,10 @@ import {
 import BigNumber from "bignumber.js";
 import React from "react";
 import { useContext } from "react";
+import { WithdrawDrawer } from "src/components/WithdrawDrawer";
+import { toHexString } from "src/lib/math.utils";
+import { SABLIER_PROXY_CONTRACT, sablierProxyInterface } from "src/lib/sablier";
 
-import { WithdrawDrawer } from "../components/WithdrawDrawer";
-import { toHexString } from "../lib/math.utils";
-import { SABLIER_PROXY_CONTRACT, sablierProxyInterface } from "../lib/sablier";
 import { useWallet } from "./WalletProvider";
 
 class WithdrawalError extends Error {
@@ -121,6 +121,7 @@ export function WithdrawalProvider({ children }: WithdrawalProviderProps) {
                   chainId: 1
                 })
                 return withdrawalTx
+
             }
         } catch (error) {
             throw error

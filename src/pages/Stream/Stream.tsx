@@ -22,20 +22,21 @@ import {
     CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import { useParams } from "react-router-dom";
-
-import { useStreamContext } from "../../context/StreamProvider";
-import { useWithdraw } from "../../context/WithdrawalProvider";
-import { formatAddress, makeEtherscanLink } from "../../lib/string.utils";
+import { useStreamContext } from "src/context/StreamProvider";
+import { useWithdraw } from "src/context/WithdrawalProvider";
+import { formatAddress, makeEtherscanLink } from "src/lib/string.utils";
 
 const STROKE_WIDTH = 6;
 
 export function StreamPage() {
     const theme = useTheme();
     const { onOpen } = useWithdraw();
-    const { loading, stream, setStreamId } = useStreamContext()
-    const params = useParams<{id: string}>();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => { setStreamId(params.id)}, [params.id])
+    const { loading, stream, setStreamId } = useStreamContext();
+    const params = useParams<{ id: string }>();
+    
+    useEffect(() => {
+        setStreamId(params.id);
+    }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (loading || !stream) {
         return (
@@ -47,7 +48,9 @@ export function StreamPage() {
 
     const tooltip = `
         This is an active stream created by ${formatAddress(stream.sender)} 
-        and paying ${formatAddress(stream.recipient)} ${stream.rate} ${stream.token.symbol}
+        and paying ${formatAddress(stream.recipient)} ${stream.rate} ${
+        stream.token.symbol
+    }
         per second. The recipient has not yet withdrawn all the funds.
     `;
 
@@ -73,8 +76,10 @@ export function StreamPage() {
                                             }
                                             strokeWidth={STROKE_WIDTH}
                                             styles={buildStyles({
-                                                pathColor: theme.colors.secondary[500],
-                                                trailColor: theme.colors.gray[50],
+                                                pathColor:
+                                                    theme.colors.secondary[500],
+                                                trailColor:
+                                                    theme.colors.gray[50],
                                             })}
                                         />
                                     </Box>
@@ -108,7 +113,9 @@ export function StreamPage() {
                                     fontSize="3xl"
                                     fontWeight="bold"
                                 >
-                                    {Number(stream?.amountStreamed)?.toFixed(10)}
+                                    {Number(stream?.amountStreamed)?.toFixed(
+                                        10
+                                    )}
                                 </Text>
                             </Flex>
                             <Text
@@ -210,8 +217,9 @@ export function StreamPage() {
                             transition="background 200ms ease 0s"
                             w="full"
                             _hover={{
-                                bgGradient: "linear(to-tr, secondary.100, primary.100)",
-                                boxShadow: "2xl"
+                                bgGradient:
+                                    "linear(to-tr, secondary.100, primary.100)",
+                                boxShadow: "2xl",
                             }}
                         >
                             <DownloadIcon boxSize={4} mr={2} />
@@ -229,10 +237,14 @@ export function StreamPage() {
                             p={4}
                             w="100%"
                         >
-                            <Box textAlign="center" w="50%" p={1}>Amount</Box>
-                            <Box textAlign="center" w="50%" p={1}>TX</Box>
+                            <Box textAlign="center" w="50%" p={1}>
+                                Amount
+                            </Box>
+                            <Box textAlign="center" w="50%" p={1}>
+                                TX
+                            </Box>
                         </ListItem>
-                        {stream.withdrawals.map(withdrawal => {
+                        {stream.withdrawals.map((withdrawal) => {
                             return (
                                 <ListItem
                                     key={withdrawal.txhash}
@@ -241,19 +253,32 @@ export function StreamPage() {
                                     borderColor="secondary.100"
                                     borderRadius="lg"
                                     display="flex"
-                                    flexDirection={{ base: "column", md: "row" }}
+                                    flexDirection={{
+                                        base: "column",
+                                        md: "row",
+                                    }}
                                     p={4}
                                     transition=".2s all"
                                     w="100%"
                                 >
-                                    <Box textAlign="center" w="50%" p={1}>{new BigNumber(withdrawal.amount).div('1e+18').toString()}</Box>
                                     <Box textAlign="center" w="50%" p={1}>
-                                        <Link isExternal href={makeEtherscanLink(withdrawal.txhash, 'transaction')}>
+                                        {new BigNumber(withdrawal.amount)
+                                            .div("1e+18")
+                                            .toString()}
+                                    </Box>
+                                    <Box textAlign="center" w="50%" p={1}>
+                                        <Link
+                                            isExternal
+                                            href={makeEtherscanLink(
+                                                withdrawal.txhash,
+                                                "transaction"
+                                            )}
+                                        >
                                             View on explorer
                                         </Link>
                                     </Box>
                                 </ListItem>
-                            )
+                            );
                         })}
                     </List>
                 </Box>

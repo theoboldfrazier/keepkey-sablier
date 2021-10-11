@@ -1,6 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-
-import { Stream } from "../types";
+import { Stream } from "src/types";
 
 type StreamQuery = {
     stream: Stream;

@@ -1,11 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
 import { Box, Button, Flex, List, ListItem, Spinner } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
-
-import { useWallet } from "../../context/WalletProvider";
-import { decimalPlaces, fromBaseUnits } from "../../lib/math.utils";
-import { formatAddress } from "../../lib/string.utils";
-import { Stream } from "../../types.d";
+import { useWallet } from "src/context/WalletProvider";
+import { decimalPlaces, fromBaseUnits } from "src/lib/math.utils";
+import { formatAddress } from "src/lib/string.utils";
+import { Stream } from "src/types.d";
 
 type StreamLookup = Pick<
     Stream,
