@@ -14,51 +14,59 @@ import {
     Input,
     InputGroup,
     InputRightElement,
+    Link,
 } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 import { useState } from "react";
 import { useRouteMatch } from "react-router-dom";
-
-import { useStreamContext } from "../context/StreamProvider";
-import { useWallet } from "../context/WalletProvider";
-import { useWithdraw } from "../context/WithdrawalProvider";
+import { useStreamContext } from "src/context/StreamProvider";
+import { useWallet } from "src/context/WalletProvider";
+import { useWithdraw } from "src/context/WithdrawalProvider";
+import { makeEtherscanLink } from "src/lib/string.utils";
 
 type WithdrawalButtonProps = {
+    loading: boolean;
     onWithdrawal(): void;
     onBuildTx(): void;
     transaction: any;
 };
 
 function WithdrawalButton({
+    loading,
     onWithdrawal,
     onBuildTx,
     transaction,
 }: WithdrawalButtonProps) {
     const { connect, wallet } = useWallet();
     if (!wallet) return <Button onClick={connect}>Connect Wallet</Button>;
-    if (transaction) return <Button onClick={onWithdrawal}>Withdrawal</Button>;
-    return <Button onClick={onBuildTx}>Build Transaction</Button>;
+    if (transaction) return <Button disabled={loading} onClick={onWithdrawal}>Withdrawal</Button>;
+    return <Button disabled={loading} onClick={onBuildTx}>Build Transaction</Button>;
 }
 
 export function WithdrawDrawer() {
     const [amount, setAmount] = useState<string>("");
     const [transaction, setTransaction] = useState<any>(null);
     const [withdrawalTx, setWithdrawalTx] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
     const { stream } = useStreamContext();
     const { isOpen, onClose, buildtx, withdrawal } = useWithdraw();
     const match = useRouteMatch<{ id: string }>("/stream/:id");
 
     const handleBuildTx = async () => {
         if (amount && match) {
+            setLoading(true)
             const tx = await buildtx({ amount, id: match.params.id });
             setTransaction(tx);
+            setLoading(false)
         }
     };
 
     const handleWithdrawal = async () => {
         if (amount && match) {
+            setLoading(true)
             const tx = await withdrawal({ amount, id: match.params.id });
             setWithdrawalTx(tx);
+            setLoading(false)
         }
     };
 
@@ -68,6 +76,7 @@ export function WithdrawDrawer() {
 
     const handleClose = () => {
         setAmount("");
+        setLoading(false);
         setTransaction(null)
         setWithdrawalTx(null)
         onClose();
@@ -113,18 +122,29 @@ export function WithdrawDrawer() {
                             />
                         </FormControl>
                     )}
-                    {withdrawalTx && <Box>{withdrawalTx.hash}</Box>}
+                    {loading && (
+                        <Box fontSize="sm">Loading...</Box>
+                    )}
+                    {withdrawalTx && (
+                        <FormControl id="txHash" mb={4}>
+                            <FormLabel>Transaction Hash</FormLabel>
+                            <Link isExternal href={makeEtherscanLink(withdrawalTx.hash, 'transaction')}>
+                                {withdrawalTx.hash}
+                            </Link>
+                        </FormControl>
+                    )}
                 </DrawerBody>
                 <DrawerFooter>
                     <Button
                         colorScheme="secondary"
                         variant="outline"
                         mr={3}
-                        onClick={onClose}
+                        onClick={handleClose}
                     >
                         Cancel
                     </Button>
                     <WithdrawalButton
+                        loading={loading}
                         onBuildTx={handleBuildTx}
                         onWithdrawal={handleWithdrawal}
                         transaction={transaction}

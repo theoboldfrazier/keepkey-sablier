@@ -1,8 +1,7 @@
 import React, { useContext, useMemo, useReducer } from "react";
-
-import { useInterval } from "../hooks/useInterval";
-import { useStream } from "../hooks/useStream";
-import { formatStream, FormattedStream } from "../lib/stream.utils";
+import { useInterval } from "src/hooks/useInterval";
+import { useStream } from "src/hooks/useStream";
+import { formatStream, FormattedStream } from "src/lib/stream.utils";
 
 type StreamState = {
     id: null | string;

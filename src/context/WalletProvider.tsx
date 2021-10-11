@@ -9,8 +9,7 @@ import React, {
     useMemo,
     useState,
 } from "react";
-
-import { setupOnboard } from "../lib/onboard";
+import { setupOnboard } from "src/lib/onboard";
 
 type WalletContextProps = {
     onboard: OnboardAPI | null;

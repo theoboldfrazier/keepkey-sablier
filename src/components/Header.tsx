@@ -1,7 +1,6 @@
 import { Box, Button, Container, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-
-import { useWallet } from "../context/WalletProvider";
+import { useWallet } from "src/context/WalletProvider";
 
 export function Header() {
     const { disconnect, wallet } = useWallet();
