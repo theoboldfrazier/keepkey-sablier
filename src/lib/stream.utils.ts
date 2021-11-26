@@ -10,6 +10,7 @@ export type FormattedStream = Stream & {
     percentWithdrawn: number;
     stopTimeDisplay: string;
     rate: string;
+    withdrawn: number;
 };
 
 function calculateAmountStreamed(stream: Stream) {
@@ -61,6 +62,7 @@ export function formatStream(stream?: Stream): FormattedStream | null {
         remainingBalance,
         percentStreamed: percentStreamed > 100 ? 100 : percentStreamed,
         percentWithdrawn,
+        withdrawn,
         stopTimeDisplay: dayjs(Number(stream.stopTime) * 1000).format(
             "MMMM DD, YYYY h:m A"
         ),
