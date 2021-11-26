@@ -133,9 +133,17 @@ export function StreamPage() {
                     <Flex justify="center">
                         <Flex align="center" flexDirection="column" flex={1}>
                             <Box textAlign="center">
-                                <Text as="span" mr={2}>
+                                <Text as="span" fontWeight="bold">
                                     Streamed
                                 </Text>
+                                <Box>
+                                    <Text as="span" mr={2}>
+                                        {new BigNumber(stream?.amountStreamed || 0).toFixed(2)}
+                                    </Text>
+                                    <Text as="span" fontWeight="bold">
+                                        {stream.token.symbol}
+                                    </Text>
+                                </Box>
                                 <Text as="span" fontWeight="bold">
                                     {stream?.percentStreamed?.toFixed(2)} %
                                 </Text>
@@ -150,9 +158,17 @@ export function StreamPage() {
                         </Flex>
                         <Flex align="center" flexDirection="column" flex={1}>
                             <Box textAlign="center">
-                                <Text as="span" mr={2}>
+                                <Text as="span"  fontWeight="bold">
                                     Withdrawn
                                 </Text>
+                                <Box>
+                                    <Text as="span" mr={2}>
+                                        {new BigNumber(stream?.withdrawn || 0).toFixed(2)}
+                                    </Text>
+                                    <Text as="span" fontWeight="bold">
+                                        {stream.token.symbol}
+                                    </Text>
+                                </Box>
                                 <Text as="span" fontWeight="bold">
                                     {stream?.percentWithdrawn?.toFixed(2)} %
                                 </Text>
@@ -168,6 +184,30 @@ export function StreamPage() {
                         </Flex>
                     </Flex>
                 </Box>
+                <Flex 
+                    align="center"
+                    bgGradient="linear(to-r, primary.100, secondary.200)"
+                    borderColor="secondary.100"
+                    borderRadius="lg"
+                    boxShadow="2xl"
+                    color="blackAlpha.900"
+                    flexDirection="column"
+                    justify="center"
+                    textAlign="center"
+                    mb={8}
+                    px={16}
+                    py={4}
+                    zIndex={0}
+                    maxW="100%"
+                >
+                    <Text fontSize="lg" fontWeight="bold">Claim Stats</Text>
+                    <Text>
+                        Total remaining balance: {new BigNumber(stream.remainingBalance).toFixed(2)}
+                    </Text>
+                    <Text>
+                        Available to claim: {new BigNumber(stream.available).toFixed(2)}
+                    </Text>
+                </Flex>
                 <Flex
                     align="center"
                     bgGradient="linear(to-r, primary.100, secondary.200)"
@@ -248,23 +288,17 @@ export function StreamPage() {
                             return (
                                 <ListItem
                                     key={withdrawal.txhash}
-                                    boxShadow="lg"
+                                    boxShadow="sm"
                                     border="2px solid"
                                     borderColor="secondary.100"
                                     borderRadius="lg"
                                     display="flex"
-                                    flexDirection={{
-                                        base: "column",
-                                        md: "row",
-                                    }}
-                                    p={4}
-                                    transition=".2s all"
+                                    flexDirection={{ base: "column", md: "row" }}
+                                    p={1}
                                     w="100%"
                                 >
                                     <Box textAlign="center" w="50%" p={1}>
-                                        {new BigNumber(withdrawal.amount)
-                                            .div("1e+18")
-                                            .toString()}
+                                        {new BigNumber(withdrawal.amount).div("1e+18").toString()}
                                     </Box>
                                     <Box textAlign="center" w="50%" p={1}>
                                         <Link
