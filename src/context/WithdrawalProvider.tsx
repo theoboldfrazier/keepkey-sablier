@@ -74,7 +74,7 @@ export function WithdrawalProvider({ children }: WithdrawalProviderProps) {
         };
         try {
             const gasPrice = await provider?.getGasPrice();
-            const gasLimit = "80000";
+            const gasLimit = "200000";
             const bufferedGasLimit = new BigNumber(gasLimit)
                 .times(1.2)
                 .decimalPlaces(0)
