@@ -4,6 +4,6 @@ import {
 } from "@apollo/client";
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/name/sablierhq/sablier',
+    uri: 'https://api.thegraph.com/subgraphs/name/sablier-labs/sablier',
     cache: new InMemoryCache()
 });
