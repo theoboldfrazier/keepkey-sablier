@@ -71,7 +71,7 @@ export function WithdrawDrawer() {
     };
 
     const handleSetMax = () => {
-        if (stream) setAmount(new BigNumber(stream.available).toFixed(0));
+        if (stream) setAmount(new BigNumber(stream.available).toFixed(0, BigNumber.ROUND_DOWN));
     };
 
     const handleClose = () => {
